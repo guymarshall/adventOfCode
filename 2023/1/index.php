@@ -8,32 +8,66 @@
     find the total of all numbers
 */
 
-const DIGITS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const DIGITS = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    'one',
+    'two',
+    'three',
+    'four',
+    'five',
+    'six',
+    'seven',
+    'eight',
+    'nine'
+];
 
 function getFirstDigit(string $code): int
 {
-    $length = mb_strlen($code, 'UTF-8');
+    $firstDigit = 0;
 
-    for ($i = 0; $i < $length; $i++) {
-        if (in_array($code[$i], DIGITS, true)) {
-            return (int) $code[$i];
+    foreach (DIGITS as $digit) {
+        $position = strpos($code, $digit);
+
+        if (!$position) {
+            continue;
+        }
+
+        if ($position < $firstDigit) {
+            $firstDigit = (int) $digit;
+            break;
         }
     }
 
-    throw new RuntimeException('Digit not found');
+    return $firstDigit;
 }
 
 function getLastDigit(string $code): int
 {
-    $length = mb_strlen($code, 'UTF-8');
+    $lastDigit = mb_strlen($code, 'UTF-8');
 
-    for ($i = $length - 1; $i >= 0; $i--) {
-        if (in_array($code[$i], DIGITS, true)) {
-            return (int) $code[$i];
+    foreach (DIGITS as $digit) {
+        $position = strpos($code, $digit);
+
+        if (!$position) {
+            continue;
+        }
+
+        if ($position < $lastDigit) {
+            $lastDigit = (int) $digit;
+            break;
         }
     }
 
-    throw new RuntimeException('Digit not found');
+    return $lastDigit;
 }
 
 $codes = file('codes.txt', FILE_IGNORE_NEW_LINES);
