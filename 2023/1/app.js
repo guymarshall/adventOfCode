@@ -10,39 +10,40 @@ import { digits } from "./digits";
 import { codes } from "./codes";
 
 function getFirstDigit(code) {
-    let firstDigit = 0;
+    let firstDigit = code.length;
 
-    digits.forEach(digit => {
+    digits.every(digit => {
         let position = code.indexOf(digit);
 
         if (position === -1) {
-            continue;
+            return true;
         }
 
         if (position < firstDigit) {
             firstDigit = parseInt(digit);
-            // TODO: got to here
-            break;
         }
+
+        return true;
     });
 
     return firstDigit;
 }
 
 function getLastDigit(code) {
-    let lastDigit = code.length;
+    let lastDigit = 0;
 
-    digits.forEach(digit => {
-        let position = strpos(code, digit);
+    digits.every(digit => {
+        let position = code.lastIndexOf(digit);
 
         if (position === -1) {
-            continue;
+            return true;
         }
 
-        if (position < lastDigit) {
+        if (position > lastDigit) {
             lastDigit = parseInt(digit);
-            break;
         }
+
+        return true;
     });
 
     return lastDigit;
@@ -50,11 +51,15 @@ function getLastDigit(code) {
 
 let total = 0;
 
+// do code.firstIndex(digit)
+// get the lowest and highest and store values
+// convert
+
 codes.forEach(code => {
-    firstDigit = getFirstDigit(code);
-    lastDigit = getLastDigit(code);
-    concat = firstDigit . lastDigit;
-    total += (int) concat;
+    const firstDigit = getFirstDigit(code);
+    const lastDigit = getLastDigit(code);
+    const concat = parseInt(`${firstDigit}${lastDigit}`);
+    total += concat;
 });
 
 console.log(total);
