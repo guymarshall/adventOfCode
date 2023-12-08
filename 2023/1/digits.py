@@ -1,4 +1,4 @@
-export const digits = [
+digits = [
     '0',
     '1',
     '2',
@@ -18,4 +18,4 @@ export const digits = [
     'seven',
     'eight',
     'nine'
-];
+]

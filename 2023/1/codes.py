@@ -1,4 +1,4 @@
-export const codes = [
+codes = [
     '99lbqpxzzlbtvkmfrvrnmcxttseven',
     'q7cnfslbtpkvseven',
     '6threezlljtzcr1sdjkthree4cx',
@@ -999,4 +999,4 @@ export const codes = [
     'fivexpx1vsrreightkp7dph',
     '3eightlrrlgck967',
     'xcntwone4633sixmkm1nine',
-];
+]
