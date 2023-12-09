@@ -5,23 +5,31 @@ def get_game_record(filename: str) -> list:
     return lines
 
 
+def get_number_from_string(string: str) -> int:
+    return int(string.replace('red', '').replace('green', '').replace('blue', ''))
+
+
+def get_colour_from_string(string: str) -> str:
+    if string.__contains__('red'):
+        return 'red'
+    elif string.__contains__('green'):
+        return 'green'
+    elif string.__contains__('blue'):
+        return 'blue'
+    else:
+        raise RuntimeError('Invalid colour')
+
+
 def main():
     game_record = get_game_record('game_record.txt')
-    game_record = [
-        'Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green',
-        'Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue',
-        'Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red',
-        'Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red',
-        'Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green',
-    ]
-
-    id_sum = 0
 
     limits = {
         'red': 12,
         'green': 13,
         'blue': 14,
     }
+
+    invalid_games = []
 
     for line in game_record:
         line_without_game = line.removeprefix('Game ')
@@ -31,7 +39,20 @@ def main():
 
         for collection in game_data:
             items = collection.split(',')
-            print(items)
+
+            for item in items:
+                number = get_number_from_string(item)
+                colour = get_colour_from_string(item)
+
+                if number > limits.get(colour) and game_id not in invalid_games:
+                    invalid_games.append(game_id)
+                    break
+
+    all_game_ids = [int(line.removeprefix('Game ').split(':')[0]) for line in game_record]
+
+    possible_games = [game for game in all_game_ids if game not in invalid_games]
+
+    print(sum(possible_games))
 
 
 if __name__ == '__main__':
