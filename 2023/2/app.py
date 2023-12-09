@@ -22,14 +22,18 @@ def get_colour_from_string(string: str) -> str:
 
 def main():
     game_record = get_game_record('game_record.txt')
+    game_record = [
+        'Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green',
+        'Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue',
+        'Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red',
+        'Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red',
+        'Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green',
+    ]
 
-    limits = {
-        'red': 12,
-        'green': 13,
-        'blue': 14,
-    }
+    sum_of_powers = 0
 
-    invalid_games = []
+    all_game_ids = [int(line.removeprefix('Game ').split(':')[0]) for line in game_record]
+    minimum_per_game = {game: 0 for game in all_game_ids}
 
     for line in game_record:
         line_without_game = line.removeprefix('Game ')
@@ -38,21 +42,29 @@ def main():
         game_data = [selection.replace(' ', '') for selection in game_data_raw.split(';')]
 
         for collection in game_data:
+            minimum_colour_count = {
+                'red': 0,
+                'green': 0,
+                'blue': 0
+            }
+
             items = collection.split(',')
 
             for item in items:
                 number = get_number_from_string(item)
                 colour = get_colour_from_string(item)
 
-                if number > limits.get(colour) and game_id not in invalid_games:
-                    invalid_games.append(game_id)
-                    break
+                if number > minimum_colour_count.get(colour):
+                    minimum_colour_count.update({colour: number})
 
-    all_game_ids = [int(line.removeprefix('Game ').split(':')[0]) for line in game_record]
+            power = minimum_colour_count.get('red') * minimum_colour_count.get('green') * minimum_colour_count.get('blue')
+            minimum_per_game.update({
+                game_id: power
+            })
 
-    possible_games = [game for game in all_game_ids if game not in invalid_games]
+        sum_of_powers += minimum_per_game.get(game_id)
 
-    print(sum(possible_games))
+    print(sum_of_powers)
 
 
 if __name__ == '__main__':
