@@ -22,13 +22,6 @@ def get_colour_from_string(string: str) -> str:
 
 def main():
     game_record = get_game_record('game_record.txt')
-    game_record = [
-        'Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green',
-        'Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue',
-        'Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red',
-        'Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red',
-        'Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green',
-    ]
 
     sum_of_powers = 0
 
@@ -40,6 +33,12 @@ def main():
         game_id = int(line_without_game.split(':')[0])
         game_data_raw = line_without_game.split(':')[1]
         game_data = [selection.replace(' ', '') for selection in game_data_raw.split(';')]
+
+        minimum_per_line = {
+            'red': 0,
+            'green': 0,
+            'blue': 0
+        }
 
         for collection in game_data:
             minimum_colour_count = {
@@ -57,10 +56,25 @@ def main():
                 if number > minimum_colour_count.get(colour):
                     minimum_colour_count.update({colour: number})
 
-            power = minimum_colour_count.get('red') * minimum_colour_count.get('green') * minimum_colour_count.get('blue')
-            minimum_per_game.update({
-                game_id: power
-            })
+            if minimum_colour_count.get('red') > minimum_per_line.get('red'):
+                minimum_per_line.update({
+                    'red': minimum_colour_count.get('red')
+                })
+
+            if minimum_colour_count.get('green') > minimum_per_line.get('green'):
+                minimum_per_line.update({
+                    'green': minimum_colour_count.get('green')
+                })
+
+            if minimum_colour_count.get('blue') > minimum_per_line.get('blue'):
+                minimum_per_line.update({
+                    'blue': minimum_colour_count.get('blue')
+                })
+
+        power = minimum_per_line.get('red') * minimum_per_line.get('green') * minimum_per_line.get('blue')
+        minimum_per_game.update({
+            game_id: power
+        })
 
         sum_of_powers += minimum_per_game.get(game_id)
 
